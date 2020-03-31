@@ -5,9 +5,9 @@
 
     <bean id="integrationDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://10.37.48.137:3408/decoy?useSSL=false" />
-        <property name="username" value="decoy" />
-        <property name="password" value="decoy"/>
+        <property name="url" value="jdbc:mysql://127.0.0.1:3306/bai?useSSL=false" />
+        <property name="username" value="root" />
+        <property name="password" value="root"/>
     </bean>
 
     <bean id="integrationSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">

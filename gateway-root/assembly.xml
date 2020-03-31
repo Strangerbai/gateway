@@ -1,0 +1,17 @@
+<assembly>
+    <id>deploy</id>
+    <baseDirectory>${appname}.war</baseDirectory>
+    <formats>
+        <format>tgz</format>
+    </formats>
+    <includeBaseDirectory>true</includeBaseDirectory>
+    <fileSets>
+        <fileSet>
+            <directory>target/exploded/${appname}.war</directory>
+            <includes>
+                <include>**</include>
+            </includes>
+            <outputDirectory>/</outputDirectory>
+        </fileSet>
+    </fileSets>
+</assembly>

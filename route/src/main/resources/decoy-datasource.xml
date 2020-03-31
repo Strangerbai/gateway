@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean id="integrationDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://10.37.48.137:3408/decoy?useSSL=false" />
+        <property name="username" value="decoy" />
+        <property name="password" value="decoy"/>
+    </bean>
+
+    <bean id="integrationSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="integrationDataSource"/>
+        <!-- 配置扫描Mapper XML的位置 -->
+        <property name="mapperLocations">
+            <list>
+                <value>classpath:/mapper/*.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="integrationMapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.test.gateway.route.dto.mapper"/>
+        <property name="sqlSessionFactoryBeanName" value="integrationSessionFactory"/>
+    </bean>
+
+<!--    <context:annotation-config/>-->
+<!--    <context:component-scan base-package="com.test.gateway.route.dto.mapper" annotation-config="false"/>-->
+
+</beans>

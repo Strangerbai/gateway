@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: cloud-gateway
+  profiles: dev
+
+server:
+  port: 9000
+logging:
+  config: classpath:logback-spring.xml
+  path: ./
+
+skip_record: -10

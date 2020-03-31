@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.gateway.route.dto.mapper.TbRecordDOMapper">
+  <resultMap id="BaseResultMap" type="com.test.gateway.route.dto.model.TbRecordDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="service" jdbcType="VARCHAR" property="service" />
+    <result column="request_path" jdbcType="VARCHAR" property="requestPath" />
+    <result column="request_method" jdbcType="VARCHAR" property="requestMethod" />
+    <result column="http_code" jdbcType="VARCHAR" property="httpCode" />
+    <result column="memo" jdbcType="VARCHAR" property="memo" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.test.gateway.route.dto.model.TbRecordDOWithBLOBs">
+    <result column="request_header" jdbcType="LONGVARCHAR" property="requestHeader" />
+    <result column="request_body" jdbcType="LONGVARCHAR" property="requestBody" />
+    <result column="response_header" jdbcType="LONGVARCHAR" property="responseHeader" />
+    <result column="response_body" jdbcType="LONGVARCHAR" property="responseBody" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, service, request_path, request_method, http_code, memo, gmt_create, gmt_modified
+  </sql>
+  <sql id="Blob_Column_List">
+    request_header, request_body, response_header, response_body
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.test.gateway.route.dto.model.TbRecordDOExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from decoy_record
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.test.gateway.route.dto.model.TbRecordDOExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from decoy_record
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from decoy_record
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from decoy_record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.test.gateway.route.dto.model.TbRecordDOExample">
+    delete from decoy_record
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.test.gateway.route.dto.model.TbRecordDOWithBLOBs">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into decoy_record (service, request_path, request_method, 
+      http_code, memo, gmt_create, 
+      gmt_modified, request_header, request_body, 
+      response_header, response_body)
+    values (#{service,jdbcType=VARCHAR}, #{requestPath,jdbcType=VARCHAR}, #{requestMethod,jdbcType=VARCHAR}, 
+      #{httpCode,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP}, #{requestHeader,jdbcType=LONGVARCHAR}, #{requestBody,jdbcType=LONGVARCHAR}, 
+      #{responseHeader,jdbcType=LONGVARCHAR}, #{responseBody,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.test.gateway.route.dto.model.TbRecordDOWithBLOBs">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into decoy_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="service != null">
+        service,
+      </if>
+      <if test="requestPath != null">
+        request_path,
+      </if>
+      <if test="requestMethod != null">
+        request_method,
+      </if>
+      <if test="httpCode != null">
+        http_code,
+      </if>
+      <if test="memo != null">
+        memo,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
+      <if test="requestHeader != null">
+        request_header,
+      </if>
+      <if test="requestBody != null">
+        request_body,
+      </if>
+      <if test="responseHeader != null">
+        response_header,
+      </if>
+      <if test="responseBody != null">
+        response_body,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="service != null">
+        #{service,jdbcType=VARCHAR},
+      </if>
+      <if test="requestPath != null">
+        #{requestPath,jdbcType=VARCHAR},
+      </if>
+      <if test="requestMethod != null">
+        #{requestMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="httpCode != null">
+        #{httpCode,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null">
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="requestHeader != null">
+        #{requestHeader,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="requestBody != null">
+        #{requestBody,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="responseHeader != null">
+        #{responseHeader,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="responseBody != null">
+        #{responseBody,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.test.gateway.route.dto.model.TbRecordDOExample" resultType="java.lang.Long">
+    select count(*) from decoy_record
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update decoy_record
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.service != null">
+        service = #{record.service,jdbcType=VARCHAR},
+      </if>
+      <if test="record.requestPath != null">
+        request_path = #{record.requestPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.requestMethod != null">
+        request_method = #{record.requestMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="record.httpCode != null">
+        http_code = #{record.httpCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memo != null">
+        memo = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreate != null">
+        gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null">
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.requestHeader != null">
+        request_header = #{record.requestHeader,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.requestBody != null">
+        request_body = #{record.requestBody,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.responseHeader != null">
+        response_header = #{record.responseHeader,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.responseBody != null">
+        response_body = #{record.responseBody,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update decoy_record
+    set id = #{record.id,jdbcType=BIGINT},
+      service = #{record.service,jdbcType=VARCHAR},
+      request_path = #{record.requestPath,jdbcType=VARCHAR},
+      request_method = #{record.requestMethod,jdbcType=VARCHAR},
+      http_code = #{record.httpCode,jdbcType=VARCHAR},
+      memo = #{record.memo,jdbcType=VARCHAR},
+      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      request_header = #{record.requestHeader,jdbcType=LONGVARCHAR},
+      request_body = #{record.requestBody,jdbcType=LONGVARCHAR},
+      response_header = #{record.responseHeader,jdbcType=LONGVARCHAR},
+      response_body = #{record.responseBody,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update decoy_record
+    set id = #{record.id,jdbcType=BIGINT},
+      service = #{record.service,jdbcType=VARCHAR},
+      request_path = #{record.requestPath,jdbcType=VARCHAR},
+      request_method = #{record.requestMethod,jdbcType=VARCHAR},
+      http_code = #{record.httpCode,jdbcType=VARCHAR},
+      memo = #{record.memo,jdbcType=VARCHAR},
+      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.test.gateway.route.dto.model.TbRecordDOWithBLOBs">
+    update decoy_record
+    <set>
+      <if test="service != null">
+        service = #{service,jdbcType=VARCHAR},
+      </if>
+      <if test="requestPath != null">
+        request_path = #{requestPath,jdbcType=VARCHAR},
+      </if>
+      <if test="requestMethod != null">
+        request_method = #{requestMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="httpCode != null">
+        http_code = #{httpCode,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null">
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="requestHeader != null">
+        request_header = #{requestHeader,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="requestBody != null">
+        request_body = #{requestBody,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="responseHeader != null">
+        response_header = #{responseHeader,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="responseBody != null">
+        response_body = #{responseBody,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.test.gateway.route.dto.model.TbRecordDOWithBLOBs">
+    update decoy_record
+    set service = #{service,jdbcType=VARCHAR},
+      request_path = #{requestPath,jdbcType=VARCHAR},
+      request_method = #{requestMethod,jdbcType=VARCHAR},
+      http_code = #{httpCode,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      request_header = #{requestHeader,jdbcType=LONGVARCHAR},
+      request_body = #{requestBody,jdbcType=LONGVARCHAR},
+      response_header = #{responseHeader,jdbcType=LONGVARCHAR},
+      response_body = #{responseBody,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.test.gateway.route.dto.model.TbRecordDO">
+    update decoy_record
+    set service = #{service,jdbcType=VARCHAR},
+      request_path = #{requestPath,jdbcType=VARCHAR},
+      request_method = #{requestMethod,jdbcType=VARCHAR},
+      http_code = #{httpCode,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByExampleWithBLOBsWithRowbounds" parameterType="com.test.gateway.route.dto.model.TbRecordDOExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from decoy_record
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExampleWithRowbounds" parameterType="com.test.gateway.route.dto.model.TbRecordDOExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from decoy_record
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                   http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                   http://www.springframework.org/schema/context
+                   http://www.springframework.org/schema/context/spring-context-4.0.xsd
+                   http://www.springframework.org/schema/tx
+                   http://www.springframework.org/schema/tx/spring-tx.xsd
+                   http://www.springframework.org/schema/cache
+                   http://www.springframework.org/schema/cache/spring-cache.xsd">
+    <import resource="decoy-datasource.xml"/>
+
+    <bean id="defaultDecryptImpl" class="com.test.gateway.service.service.decryptServiceImpl.DefaultDecryptImpl"/>
+    <bean id="mashangDecryptImpl" class="com.test.gateway.service.service.decryptServiceImpl.MashangDecryptImpl"/>
+    <bean id="guangdaDecrypteImpl" class="com.test.gateway.service.service.decryptServiceImpl.GuangdaDecrypteImpl"/>
+
+    <bean id="decryptService" class="com.test.gateway.service.service.DecryptService">
+        <property name="decryptFacadeMap">
+            <map>
+                <entry key="0" value-ref="defaultDecryptImpl"/>
+                <entry key="1" value-ref="mashangDecryptImpl"/>
+                <entry key="2" value-ref="guangdaDecrypteImpl"/>
+            </map>
+        </property>
+    </bean>
+
+    <cache:annotation-driven/>
+    <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+        <property name="caches">
+            <set>
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean"
+                      p:name="extBeansCache"/>
+            </set>
+        </property>
+
+    </bean>
+
+    <context:annotation-config/>
+    <context:component-scan base-package="com.test.gateway" annotation-config="false"/>
+
+
+
+</beans>

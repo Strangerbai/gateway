@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+
+    <property name="logRoot" value="/home/www/logs/gateway"/>
+    <property name="pattern" value="%d %p [%t] %c{20} %X{traceId:--} %m%n"/>
+    <property name="logHistory" value="200"/>
+    <property name="logName" value="gateway"/>
+
+    <appender name="info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logRoot}/${logName}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logRoot}/${logName}.log.%d{yyyy-MM-dd-HH}</fileNamePattern>
+            <maxHistory>${logHistory}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logRoot}/${logName}-error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logRoot}/${logName}-error.log.%d{yyyy-MM-dd-HH}</fileNamePattern>
+            <maxHistory>${logHistory}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="info"/>
+    </root>
+
+    <logger name="info" level="INFO" additivity="false">
+        <appender-ref ref="info"/>
+    </logger>
+
+    <logger name="error" level="INFO" additivity="false">
+        <appender-ref ref="error"/>
+    </logger>
+
+</configuration>

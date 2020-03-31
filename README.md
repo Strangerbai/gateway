@@ -1,12 +1,12 @@
 # gateway
 网关路由
 
-实现功能：
-  1，路由信息持久化存储
-  2，动态更新路由信息
-  3，保存转发的请求和响应
-路由表结构：
-  CREATE TABLE `decoy_route` (
+### 实现功能：
+  * 路由信息持久化存储
+  * 动态更新路由信息
+  * 保存转发的请求和响应
+### 路由表结构：
+  * CREATE TABLE `route` (
     `id` bigint(32) NOT NULL AUTO_INCREMENT,
     `service` varchar(32) NOT NULL COMMENT '服务名',
     `predicates` varchar(1024) NOT NULL COMMENT '路由规则',
